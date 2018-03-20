@@ -1,0 +1,40 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Query {
+    getUser(id: ID!): User
+    getPet(id: ID!): Pet
+    getTag(title: String!): Tag
+}
+
+type Mutation {
+    addPet(pet: PetInput!): Pet
+    updatePet(pet: PetInput!): Pet
+    deletePet(userID: ID!, petID: ID!): Boolean
+}
+
+type Pet {
+    id: ID
+    owner: User
+    name: String
+    tags: [Tag]
+}
+
+type Tag {
+    id: ID
+    title: String
+}
+
+type User {
+    id: ID
+    name: String
+}
+
+input PetInput {
+    id: ID!
+    ownerID: ID!
+    name: String!
+    tagIDs: [Int]!
+}
