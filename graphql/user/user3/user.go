@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/gin-gonic/gin"
+	"net/http"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -86,52 +85,12 @@ func executeQuery(query string, schema graphql.Schema, vars map[string]interface
 	return res
 }
 
-// func main() {
-// 	query := `query userinfo($uid: String = "1") {
-// 				user(id: $uid){
-// 					id
-// 					name
-// 				}
-// 			}
-// 		`
-// 	vars := map[string]interface{}{"uid": "3"}
-// 	r := executeQuery(query, schema, vars)
-// 	rJSON, _ := json.Marshal(r)
-// 	fmt.Printf("%s \n", rJSON)
-// }
-
-// func main() {
-// 	http.HandleFunc("/graphql", func(w http.ResponseWriter, r *http.Request) {
-// 		res := executeQuery(r.URL.Query().Get("query"), schema, nil)
-// 		json.NewEncoder(w).Encode(res)
-// 	})
-// 	http.ListenAndServe(":8889", nil)
-// }
-
-// func main() {
-// 	h := handler.New(&handler.Config{
-// 		Schema:   &schema,
-// 		Pretty:   true,
-// 		GraphiQL: true,
-// 	})
-// 	http.Handle("/graphql", h)
-// 	http.ListenAndServe(":8889", nil)
-// }
-
-func ginHandler() gin.HandlerFunc {
+func main() {
 	h := handler.New(&handler.Config{
 		Schema:   &schema,
 		Pretty:   true,
 		GraphiQL: true,
 	})
-
-	return func(c *gin.Context) {
-		h.ServeHTTP(c.Writer, c.Request)
-	}
-}
-
-func main() {
-	router := gin.Default()
-	router.Any("/graphql", ginHandler())
-	router.Run(":8080")
+	http.Handle("/graphql", h)
+	http.ListenAndServe(":8080", nil)
 }
