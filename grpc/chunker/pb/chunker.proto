@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+service Chunker {
+    rpc Chunker(Empty) returns (stream Chunk) {}
+}
+
+message Empty{}
+
+message Chunk {
+    bytes chunk = 1;
+}

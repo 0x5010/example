@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package pb;
+
+service RangeChunker {
+    rpc Range(Res) returns (stream Chunk) {}
+}
+
+message Res {
+    repeated Range r = 1;
+}
+
+message Range {
+    int32 start = 1;
+    int32 stop = 2;
+}
+
+message Chunk {
+    bytes chunk = 1;
+}
