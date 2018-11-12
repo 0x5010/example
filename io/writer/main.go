@@ -1,11 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 )
 
-func stdoutWrite() {
+func bufferWrite() {
 	proverbs := []string{
 		"Channels orchestrate mutexes serialize\n",
 		"Cgo is not Go\n",
@@ -13,8 +14,10 @@ func stdoutWrite() {
 		"Don't panic\n",
 	}
 
+	var writer bytes.Buffer
+
 	for _, p := range proverbs {
-		n, err := os.Stdout.Write([]byte(p))
+		n, err := writer.Write([]byte(p))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -24,6 +27,7 @@ func stdoutWrite() {
 			os.Exit(1)
 		}
 	}
+	fmt.Println(writer.String())
 }
 
 type chanWriter struct {
@@ -66,6 +70,6 @@ func customWriter() {
 }
 
 func main() {
-	stdoutWrite()
+	bufferWrite()
 	customWriter()
 }
